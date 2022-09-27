@@ -23,7 +23,7 @@ def rFastq(filename):
             sequences.append(seq)
             qualities.append(qual)
     return sequences, qualities
-# sequencess, qualities = rFastq("/Users/gabriellealmirol/Downloads/lambda_virus.fa")
+# sequencess, qualities = rFastq("/Users/. . ./Downloads/lambda_virus.fa")
 
 
 # 1. How many times does AGGT or its reverse complement (ACCT) occur in the lambda virus genome?
@@ -61,12 +61,12 @@ def naive_with_rc(p, t):
     else:
         return naive(p, t) + naive(rc, t)
 
-lambda_virus_genome = rGenome("/Users/gabriellealmirol/Downloads/lambda_virus.fa")
+lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
 o = naive_with_rc("ACCT", lambda_virus_genome)
 print("ACCT in lambda_virus_genome:")
 print("# occurrences %d" % len(o))
 
-lambda_virus_genome = rGenome("/Users/gabriellealmirol/Downloads/lambda_virus.fa")
+lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
 o = naive_with_rc("AGGT", lambda_virus_genome)
 print("AGGT in lambda_virus_genome:")
 print("# occurrences %d" % len(o))
@@ -94,7 +94,7 @@ def naive_2mm(p, t):
             o.append(i)
     return o
 
-lambda_virus_genome = rGenome("/Users/gabriellealmirol/Downloads/lambda_virus.fa")
+lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
 o = naive_with_rc("TTAA", lambda_virus_genome)
 print("TTAA in lambda_virus_genome:")
 print("# occurrences %d" % len(o))
@@ -104,24 +104,24 @@ print("# occurrences %d" % len(o))
 # E.g. if the leftmost occurrence of ACTAAGT is at offset 40 (0-based) and the leftmost occurrence of its reverse complement
 # ACTTAGT is at offset 29, then report 29.
 
-lambda_virus_genome = rGenome("/Users/gabriellealmirol/Downloads/lambda_virus.fa")
+lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
 o = naive_with_rc("ACTAAGT", lambda_virus_genome)
 print("ACTAAGT in lambda_virus_genome:")
 print("# occurrences %d" % min(o))
 
-lambda_virus_genome = rGenome("/Users/gabriellealmirol/Downloads/lambda_virus.fa")
+lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
 o = naive_with_rc("ACTTAGT", lambda_virus_genome)
 print("ACTTAGT in lambda_virus_genome:")
 print("# occurrences %d" % min(o))
 
 
 # 4. What is the offset of the leftmost ocurrence of AGTCGA or its reverse complement in the Lambda virus genome?
-lambda_virus_genome = rGenome("/Users/gabriellealmirol/Downloads/lambda_virus.fa")
+lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
 o = naive_with_rc("AGTCGA", lambda_virus_genome)
 print("AGTCGA in lambda_virus_genome:")
 print("# occurrences %d" % min(o))
 
-lambda_virus_genome = rGenome("/Users/gabriellealmirol/Downloads/lambda_virus.fa")
+lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
 o = naive_with_rc("AGTGGA", lambda_virus_genome)
 print("AGTGGA in lambda_virus_genome:")
 print("# occurrences %d" % min(o))
@@ -136,7 +136,7 @@ print("# occurrences %d" % min(o))
 # Hint: See  this notebook for a few examples you can use to test your naive_2mm function.
 # How many times does TTCAAGCC occur in the Lambda virus genome when allowing up to 2 mismatches
 
-lambda_virus_genome = rGenome("/Users/gabriellealmirol/Downloads/lambda_virus.fa")
+lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
 o = naive_2mm("TTCAAGCC", lambda_virus_genome)
 print("TTCAAGCC (up to 2 matches) in lambda_virus_genome:")
 print("# occurrences %d" % len(o))
@@ -145,7 +145,7 @@ print("# occurrences %d" % len(o))
 # 6. What is the offset of the leftmost occurrence of the AGGAGGTT in the Lambda virus genome when allowing
 # up to 2 matches?
 
-lambda_virus_genome = rGenome("/Users/gabriellealmirol/Downloads/lambda_virus.fa")
+lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
 o = naive_2mm("AGGAGGTT", lambda_virus_genome)
 print("AGGAGGTT (up to 2 matches) in lambda_virus_genome:")
 print("# occurrences %d" % min(o))
@@ -164,7 +164,7 @@ print("# occurrences %d" % min(o))
 # the bad cycle. It might help to review the "Analyzing reads by position" video.
 
 def createHist(qualities):
-    sequences, qualities = rFastq("/Users/gabriellealmirol/Downloads/ERR037900_1.first1000.fastq")
+    sequences, qualities = rFastq("/Users/. . ./Downloads/ERR037900_1.first1000.fastq")
     phredscore = []
     qualities = qualities[-5]
     for phred in quals:
