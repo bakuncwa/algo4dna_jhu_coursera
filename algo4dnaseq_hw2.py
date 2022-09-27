@@ -238,19 +238,18 @@ print("Occurrences:", o, " | Alignment reads:", bm_align_c, " | Character compar
 import bisect
 class Index(object):
     def __init__(self, t, k):
-        ''' Create index from all substrings of size 'length' '''
         self.k = k  # k-mer length (k)
         self.index = []
-        for i in range(len(t) - k + 1):  # for each k-mer
-            self.index.append((t[i:i + k], i))  # add (k-mer, offset) pair
-        self.index.sort()  # alphabetize by k-mer
+        for i in range(len(t) - k + 1): 
+            self.index.append((t[i:i + k], i)) 
+        self.index.sort()
 
     def query(self, p):
         ''' Return index hits for first k-mer of P '''
         kmer = p[:self.k]  # query with first k-mer
-        i = bisect.bisect_left(self.index, (kmer, -1))  # binary search
+        i = bisect.bisect_left(self.index, (kmer, -1))
         hits = []
-        while i < len(self.index):  # collect matching index entries
+        while i < len(self.index):  
             if self.index[i][0] != kmer:
                 break
             hits.append(self.index[i][1])
