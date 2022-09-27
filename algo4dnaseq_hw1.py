@@ -14,8 +14,8 @@ def rFastq(filename):
     qualities = []
     with open(filename) as fx:
         while True:
-            fx.readline() 
-            seq = fx.readline().rstrip() 
+            fx.readline()
+            seq = fx.readline().rstrip()
             fx.readline()
             qual = fx.readline().rstrip()
             if len(seq) == 0:
@@ -54,22 +54,27 @@ def reverse_comp(seq):
 
 # Naive exact matching algorithm that is strand aware
 # Instead of looking only for occurrences of P in T, look for occurrences of the reverse complement of P in T
+
 def naive_with_rc(p, t):
+    o_naive = naive(p,t)
+    o_naive_rc = naive(reverse_comp(p), t)
     rc = reverse_comp(p)
     if rc == p:
-        return naive(p, t)
-    else:
-        return naive(p, t) + naive(rc, t)
+        return o_naive
+    elif rc != p:
+        return o_naive + o_naive_rc
 
 lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
-o = naive_with_rc("ACCT", lambda_virus_genome)
+p = "ACCT"
+o = naive_with_rc(p, lambda_virus_genome)
 print("ACCT in lambda_virus_genome:")
-print("# occurrences %d" % len(o))
+print("# Occurrences: %d" % len(o))
 
 lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
-o = naive_with_rc("AGGT", lambda_virus_genome)
+p = "AGGT"
+o = naive_with_rc(p, lambda_virus_genome)
 print("AGGT in lambda_virus_genome:")
-print("# occurrences %d" % len(o))
+print("# Occurrences: %d" % len(o))
 
 
 # 2. How many times does TTAA or its reverse complement occur in the lambda virus genome?
@@ -77,27 +82,27 @@ print("# occurrences %d" % len(o))
 # if P and its reverse complement  are identical; given match offset should be reported only once
 
 def naive_2mm(p, t):
-    o = [] 
-    y = len(t) 
+    o = []
+    y = len(t)
     x = len(p)
-    for i in range(y-x + 1): 
+    for i in range(y-x + 1):
         match = True
         mismatch_c = 0
-        for j in range(x): 
+        for j in range(x):
             if t[i+j] != p[j]:
-                mismatch_c+=1 
-
+                mismatch_c+=1
                 if mismatch_c > 2:
-                    match = False 
+                    match = False
                     break
         if match:
             o.append(i)
     return o
 
 lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
-o = naive_with_rc("TTAA", lambda_virus_genome)
+p = "TTAA"
+o = naive_with_rc(p, lambda_virus_genome)
 print("TTAA in lambda_virus_genome:")
-print("# occurrences %d" % len(o))
+print("# Occurrences: %d" % len(o))
 
 
 # 3. What is the offset of the leftmost occurrence of ACTAAGT or its reverse complement in the Lambda virus genome?
@@ -105,26 +110,31 @@ print("# occurrences %d" % len(o))
 # ACTTAGT is at offset 29, then report 29.
 
 lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
-o = naive_with_rc("ACTAAGT", lambda_virus_genome)
+p = "ACTAAGT"
+o = naive_with_rc(p, lambda_virus_genome)
 print("ACTAAGT in lambda_virus_genome:")
-print("# occurrences %d" % min(o))
+print("# Occurrences: %d" % min(o))
 
 lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
-o = naive_with_rc("ACTTAGT", lambda_virus_genome)
+p = "ACTTAGT"
+o = naive_with_rc(p, lambda_virus_genome)
 print("ACTTAGT in lambda_virus_genome:")
-print("# occurrences %d" % min(o))
+print("# Occurrences: %d" % min(o))
 
 
 # 4. What is the offset of the leftmost ocurrence of AGTCGA or its reverse complement in the Lambda virus genome?
-lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
-o = naive_with_rc("AGTCGA", lambda_virus_genome)
-print("AGTCGA in lambda_virus_genome:")
-print("# occurrences %d" % min(o))
 
 lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
-o = naive_with_rc("AGTGGA", lambda_virus_genome)
+p = "AGTCGA"
+o = naive_with_rc(p, lambda_virus_genome)
+print("AGTCGA in lambda_virus_genome:")
+print("# Occurrences: %d" % min(o))
+
+lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
+p = "AGTGGA"
+o = naive_with_rc(p, lambda_virus_genome)
 print("AGTGGA in lambda_virus_genome:")
-print("# occurrences %d" % min(o))
+print("# Occurrences: %d" % min(o))
 
 
 # 5. As we will discuss, sometimes we would like to find approximate matches for P in T. That is, we want to find
@@ -137,18 +147,20 @@ print("# occurrences %d" % min(o))
 # How many times does TTCAAGCC occur in the Lambda virus genome when allowing up to 2 mismatches
 
 lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
-o = naive_2mm("TTCAAGCC", lambda_virus_genome)
+p = "TTCAAGCC"
+o = naive_2mm(p, lambda_virus_genome)
 print("TTCAAGCC (up to 2 matches) in lambda_virus_genome:")
-print("# occurrences %d" % len(o))
+print("# Occurrences: %d" % len(o))
 
 
 # 6. What is the offset of the leftmost occurrence of the AGGAGGTT in the Lambda virus genome when allowing
 # up to 2 matches?
 
 lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
-o = naive_2mm("AGGAGGTT", lambda_virus_genome)
+p = "AGGAGGTT"
+o = naive_2mm(p, lambda_virus_genome)
 print("AGGAGGTT (up to 2 matches) in lambda_virus_genome:")
-print("# occurrences %d" % min(o))
+print("# Occurrences: %d" % min(o))
 
 
 # 7. Finally, download and parse the provided FASTQ file containing real DNA sequencing reads derived from a human:
@@ -163,19 +175,19 @@ print("# occurrences %d" % min(o))
 # If the fourth position from the left has the problem, report 3. Do whatever analysis you think is needed to identify
 # the bad cycle. It might help to review the "Analyzing reads by position" video.
 
-def createHist(qualities):
-    sequences, qualities = rFastq("/Users/. . ./Downloads/ERR037900_1.first1000.fastq")
-    phredscore = []
-    qualities = qualities[-5]
-    for phred in quals:
-        q = ord(phred)-33
-        phredscore.append(q)
-    return phredscore
-h = createHist(qualities)
-print(h)
-import matplotlib.pyplot as plt
-plt.bar(range(len(h)), h)
-plt.show()
-min_h = min(h)
-index_min_h = h.index(min_h)
-print(index_min_h)
+# def createHist(qualities):
+   # sequences, qualities = rFastq("/Users/. . ./Downloads/ERR037900_1.first1000.fastq")
+   # phredscore = []
+   # qualities = qualities[-5]
+   # for phred in quals:
+       # q = ord(phred)-33
+       # phredscore.append(q)
+   # return phredscore
+# h = createHist(qualities)
+# print(h)
+# import matplotlib.pyplot as plt
+# plt.bar(range(len(h)), h)
+# plt.show()
+# min_h = min(h)
+# index_min_h = h.index(min_h)
+# print(index_min_h)
