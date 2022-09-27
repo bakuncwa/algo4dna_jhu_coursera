@@ -7,13 +7,48 @@ def rGenome(filename):
                 g += l.rstrip()
     return g
 
+
+# 1. How many alignments does the naive exact matching algorithm try when matching the string
+# GGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGG (derived from human Alu sequences) to the
+# excerpt of human chromosome 1?  (Don't consider reverse complements.)
+# 2. How many character comparisons does the naive exact matching algorithm try when matching the string
+# GGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGG (derived from human Alu sequences) to the excerpt of human
+# chromosome 1?  (Don't consider reverse complements.)
+
+# Naive Exact Matching algorithm with alignment reads + character comparison count
+def naive_with_c(p,t):
+    o = []
+    y = len(t)
+    x = len(p)
+    alignment_c = 0
+    chara_comp_c = 0
+    for i in range (y-x +1):
+        match = True
+        alignment_c += 1
+        for j in range(x):
+            chara_comp_c += 1
+            if t[i+j] != p[j]:
+                match = False
+                break
+        if match:
+            o.append(i)
+    return o, alignment_c, chara_comp_c
+
+chr1 = rGenome("/Users/. . ./Downloads/chr1.GRCh38.excerpt.fasta")
+p = "GGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGG"
+o, alignment_c, chara_comp_c = naive_with_c(p, chr1)
+print("Q1 + Q2. Naive Exact Matching algorithm in chr1 genome:")
+print("Occurrences:", o, " | Alignment reads:", alignment_c, " | Character comparisons:", chara_comp_c)
+
+
+# 3. How many alignments does Boyer-Moore try when matching the string GGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGG
+# (derived from human Alu sequences) to the excerpt of human chromosome 1?  (Don't consider reverse complements.)
+
 # Arrays
 import string
 def z_array(s):
-    """ Use Z algorithm (Gusfield theorem 1.4.1) to preprocess s """
     assert len(s) > 1
     z = [len(s)] + [0] * (len(s ) -1)
-    # Initial comparison of s[1:] with prefix
     for i in range(1, len(s)):
         if s[i] == s[ i -1]:
             z[1] += 1
@@ -33,15 +68,11 @@ def z_array(s):
                     break
             r, l = k + z[k] - 1, k
         else:
-            # Case 2
-            # Calculate length of beta
             nbeta = r - k + 1
             zkp = z[k - l]
             if nbeta > zkp:
-                # Case 2a: Zkp wins
                 z[k] = zkp
             else:
-                # Case 2b: Compare characters just past r
                 nmatch = 0
                 for i in range( r +1, len(s)):
                     if s[i] == s[i - k]:
@@ -54,13 +85,10 @@ def z_array(s):
 
 
 def n_array(s):
-    """ Compile the N array (Gusfield theorem 2.2.2) from the Z array """
     return z_array(s[::-1])[::-1]
 
 
 def big_l_prime_array(p, n):
-    """ Compile L' array (Gusfield theorem 2.2.2) using p and N array.
-        L'[i] = largest index j less than n such that N[j] = |P[i:]| """
     lp = [0] * len(p)
     for j in range(len(p ) -1):
         i = len(p) - n[j]
@@ -70,8 +98,6 @@ def big_l_prime_array(p, n):
 
 
 def big_l_array(p, lp):
-    """ Compile L array (Gusfield theorem 2.2.2) using p and L' array.
-        L[i] = largest index j less than n such that N[j] >= |P[i:]| """
     l = [0] * len(p)
     l[1] = lp[1]
     for i in range(2, len(p)):
@@ -80,12 +106,11 @@ def big_l_array(p, lp):
 
 
 def small_l_prime_array(n):
-    """ Compile lp' array (Gusfield theorem 2.2.4) using N array. """
     small_lp = [0] * len(n)
     for i in range(len(n)):
-        if n[i] == i+ 1:  # prefix matching a suffix
+        if n[i] == i+ 1: 
             small_lp[len(n) - i - 1] = i + 1
-    for i in range(len(n) - 2, -1, -1):  # "smear" them out to the left
+    for i in range(len(n) - 2, -1, -1):
         if small_lp[i] == 0:
             small_lp[i] = small_lp[i + 1]
     return small_lp
@@ -93,15 +118,12 @@ def small_l_prime_array(n):
 
 # Good suffix rule
 def good_suffix_table(p):
-    """ Return tables needed to apply good suffix rule. """
     n = n_array(p)
     lp = big_l_prime_array(p, n)
     return lp, big_l_array(p, lp), small_l_prime_array(n)
 
 
 def good_suffix_mismatch(i, big_l_prime, small_l_prime):
-    """ Given a mismatch at offset i, and given L/L' and l' arrays,
-        return amount to shift as determined by good suffix rule. """
     length = len(big_l_prime)
     assert i < length
     if i == length - 1:
@@ -113,16 +135,11 @@ def good_suffix_mismatch(i, big_l_prime, small_l_prime):
 
 
 def good_suffix_match(small_l_prime):
-    """ Given a full match of P to T, return amount to shift as
-        determined by good suffix rule. """
     return len(small_l_prime) - small_l_prime[1]
 
 
 # Bad character rule
 def dense_bad_char_tab(p, amap):
-    """ Given pattern string and list with ordered alphabet characters, create
-        and return a dense bad character table.  Table is indexed by offset
-        then by character. """
     tab = []
     nxt = [0] * len(amap)
     for i in range(0, len(p)):
@@ -165,9 +182,8 @@ class BoyerMoore(object):
 
     def match_skip(self):
         return len(self.small_l_prime) - self.small_l_prime[1]
-
-
-# Boyer-Moore with counts algorithm
+    
+# Boyer-Moore algorithm with alignment reads + character comparison count
 def bm_with_c(p, p_bm, t):
     i = 0
     o = []
@@ -193,42 +209,8 @@ def bm_with_c(p, p_bm, t):
             shift = max(shift, skip_gs)
         i += shift
     return o, bm_align_c, bm_chara_c
-
-# Naive Exact Matching algorithm with alignment reads + character comparison count
-def naive_with_c(p,t):
-    o = []
-    y = len(t)
-    x = len(p)
-    alignment_c = 0
-    chara_comp_c = 0
-    for i in range (y-x +1): # (outer) loops over reading alignments
-        match = True
-        alignment_c += 1
-        for j in range(x): # (inner) loops over character comparisons
-            chara_comp_c += 1
-            if t[i+j] != p[j]:
-                match = False
-                break
-        if match:
-            o.append(i)
-    return o, alignment_c, chara_comp_c
-
-
-# 1. How many alignments does the naive exact matching algorithm try when matching the string
-# GGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGG (derived from human Alu sequences) to the
-# excerpt of human chromosome 1?  (Don't consider reverse complements.)
-# 2. How many character comparisons does the naive exact matching algorithm try when matching the string
-# GGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGG (derived from human Alu sequences) to the excerpt of human
-# chromosome 1?  (Don't consider reverse complements.)
-chr1 = rGenome("/Users/gabriellealmirol/Downloads/chr1.GRCh38.excerpt.fasta")
-p = "GGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGG"
-o, alignment_c, chara_comp_c = naive_with_c(p, chr1)
-print("Q1 + Q2. Naive Exact Matching algorithm in chr1 genome:")
-print("Occurrences:", o, " | Alignment reads:", alignment_c, " | Character comparisons:", chara_comp_c)
-
-# 3. How many alignments does Boyer-Moore try when matching the string GGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGG
-# (derived from human Alu sequences) to the excerpt of human chromosome 1?  (Don't consider reverse complements.)
-chr1 = rGenome("/Users/gabriellealmirol/Downloads/chr1.GRCh38.excerpt.fasta")
+    
+chr1 = rGenome("/Users/. . ./Downloads/chr1.GRCh38.excerpt.fasta")
 p = "GGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGG"
 p_bm = BoyerMoore("GGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGG")
 o, bm_align_c, bm_chara_c = bm_with_c(p, p_bm, chr1)
@@ -307,7 +289,7 @@ def approximate_match_2mm(p, t, n):
     return list(all_matches), idx_hits
 
 
-chr1 = rGenome("/Users/gabriellealmirol/Downloads/chr1.GRCh38.excerpt.fasta")
+chr1 = rGenome("/Users/. . ./Downloads/chr1.GRCh38.excerpt.fasta")
 p = "GGCGCGGTGGCTCACGCCTGTAAT"
 n = 2
 print("Q4. Index hits up to 2 matches:")
@@ -333,7 +315,7 @@ def naive_2mm(p, t):
             o.append(i)
     return o
 
-chr1 = rGenome("/Users/gabriellealmirol/Downloads/chr1.GRCh38.excerpt.fasta")
+chr1 = rGenome("/Users/. . ./Downloads/chr1.GRCh38.excerpt.fasta")
 p = "GGCGCGGTGGCTCACGCCTGTAAT"
 o = naive_2mm(p, chr1)
 print("Naive_2mm up to 2 matches in chr1 genome:")
@@ -344,7 +326,7 @@ print("Naive_2mm: %d" % len(o))
 # (Don't consider reverse complements.)
 # Hint: You should be able to use the boyer_moore function (or the slower naive function) to double-check your answer.
 
-chr1 = rGenome("/Users/gabriellealmirol/Downloads/chr1.GRCh38.excerpt.fasta")
+chr1 = rGenome("/Users/. . ./Downloads/chr1.GRCh38.excerpt.fasta")
 p = "GGCGCGGTGGCTCACGCCTGTAAT"
 n = 2
 print("Q5. Total index hits up to 2 matches:")
@@ -363,26 +345,21 @@ print("Total index hits:", (approximate_match_2mm(p, chr1, n)[1]))
 
 import bisect
 class SubseqIndex(object):
-    """ Holds a subsequence index for a text T """
-
+    
     def __init__(self, t, k, ival):
-        """ Create index from all subsequences consisting of k characters
-            spaced ival positions apart.  E.g., SubseqIndex("ATAT", 2, 2)
-            extracts ("AA", 0) and ("TT", 1). """
         self.k = k  # num characters per subsequence extracted
         self.ival = ival  # space between them; 1=adjacent, 2=every other, etc
         self.index = []
         self.span = 1 + ival * (k - 1)
-        for i in range(len(t) - self.span + 1):  # for each subseq
-            self.index.append((t[i:i + self.span:ival], i))  # add (subseq, offset)
-        self.index.sort()  # alphabetize by subseq
+        for i in range(len(t) - self.span + 1):
+            self.index.append((t[i:i + self.span:ival], i)) 
+        self.index.sort()
 
     def query(self, p):
-        """ Return index hits for first subseq of p """
-        subseq = p[:self.span:self.ival]  # query with first subseq
-        i = bisect.bisect_left(self.index, (subseq, -1))  # binary search
+        subseq = p[:self.span:self.ival]
+        i = bisect.bisect_left(self.index, (subseq, -1))
         hits = []
-        while i < len(self.index):  # collect matching index entries
+        while i < len(self.index):
             if self.index[i][0] != subseq:
                 break
             hits.append(self.index[i][1])
@@ -401,26 +378,25 @@ def approximate_match_subseq(p, t, n, ival):
     segment_length = int(round(x / (n+1)))
     all_matches = set()
     idx_p = SubseqIndex(t, segment_length, ival)
-    idx_hits = 0
+    idx_hits = 0 
     for i in range(n+1):
         start = i
         matches = idx_p.query(p[start:])
-        # Extend matching segments to see if whole 'P' matches
         for m in matches:
             idx_hits += 1
             if m < start or m-start+x > y:
-                continue
+                continue  
             mismatches = 0
             for j in range(0, start):
                 if not p[j] == t[m-start+j]:
                     mismatches += 1
-                    if mismatches > n: # Cannot make more than 2 mismatches
-                        break
+                    if mismatches > n:
+                        break             
             if mismatches <= n:
                 all_matches.add(m - start)
     return list(all_matches), idx_hits
 
-chr1 = rGenome("/Users/gabriellealmirol/Downloads/chr1.GRCh38.excerpt.fasta")
+chr1 = rGenome("/Users/. . ./Downloads/chr1.GRCh38.excerpt.fasta")
 p = "GGCGCGGTGGCTCACGCCTGTAAT"
 n = 2
 ival = 3
