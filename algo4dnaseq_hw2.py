@@ -128,7 +128,7 @@ def good_suffix_mismatch(i, big_l_prime, small_l_prime):
     assert i < length
     if i == length - 1:
         return 0
-    i += 1  # i points to leftmost matching position of P
+    i += 1
     if big_l_prime[i] > 0:
         return length - big_l_prime[i]
     return length - small_l_prime[i]
@@ -155,13 +155,10 @@ class BoyerMoore(object):
     def __init__(self, p, alphabet='ACGT'):
         self.p = p
         self.alphabet = alphabet
-        # Create map from alphabet characters to integers
         self.amap = {}
         for i in range(len(self.alphabet)):
             self.amap[self.alphabet[i]] = i
-        # Make bad character rule table
         self.bad_char = dense_bad_char_tab(p, self.amap)
-        # Create good suffix rule table
         _, self.big_l, self.small_l_prime = good_suffix_table(p)
 
     def bad_character_rule(self, i, c):
@@ -175,7 +172,7 @@ class BoyerMoore(object):
         assert i < length
         if i == length - 1:
             return 0
-        i += 1  # i points to leftmost matching position of P
+        i += 1
         if self.big_l[i] > 0:
             return length - self.big_l[i]
         return length - self.small_l_prime[i]
