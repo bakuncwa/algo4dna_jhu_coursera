@@ -183,6 +183,7 @@ class BoyerMoore(object):
     def match_skip(self):
         return len(self.small_l_prime) - self.small_l_prime[1]
     
+    
 # Boyer-Moore algorithm with alignment reads + character comparison count
 def bm_with_c(p, p_bm, t):
     i = 0
@@ -217,6 +218,7 @@ o, bm_align_c, bm_chara_c = bm_with_c(p, p_bm, chr1)
 print("Q3. Boyer-Moore algorithm in chr1 genome:")
 print("Occurrences:", o, " | Alignment reads:", bm_align_c, " | Character comparisons:", bm_chara_c)
 
+
 # 4. Index-assisted approximate matching. In practicals, we built a Python class called Index
 # implementing an ordered-list version of the k-mer index.  The Index class is copied below.
 # We also implemented the pigeonhole principle using Boyer-Moore as our exact matching algorithm.
@@ -245,8 +247,7 @@ class Index(object):
         self.index.sort()
 
     def query(self, p):
-        ''' Return index hits for first k-mer of P '''
-        kmer = p[:self.k]  # query with first k-mer
+        kmer = p[:self.k]
         i = bisect.bisect_left(self.index, (kmer, -1))
         hits = []
         while i < len(self.index):  
@@ -255,6 +256,7 @@ class Index(object):
             hits.append(self.index[i][1])
             i += 1
         return hits
+    
 
 def approximate_match_2mm(p, t, n):
     y = len(t)
@@ -267,7 +269,6 @@ def approximate_match_2mm(p, t, n):
         start = i*segment_length
         end = min((i+1)*segment_length, x)
         matches = idx_p.query(p[start:end])
-        # Extend matching segments to see if whole 'P' matches
         for m in matches:
             idx_hits += 1
             if m < start or m-start+x > y:
@@ -276,7 +277,7 @@ def approximate_match_2mm(p, t, n):
             for j in range(0, start):
                 if not p[j] == t[m-start+j]:
                     mismatches += 1
-                    if mismatches > n: # Cannot make more than 2 mismatches
+                    if mismatches > n: 
                         break
             for j in range(end, x):
                 if not p[j] == t[m-start+j]:
@@ -286,7 +287,6 @@ def approximate_match_2mm(p, t, n):
             if mismatches <= n:
                 all_matches.add(m - start)
     return list(all_matches), idx_hits
-
 
 chr1 = rGenome("/Users/. . ./Downloads/chr1.GRCh38.excerpt.fasta")
 p = "GGCGCGGTGGCTCACGCCTGTAAT"
@@ -298,17 +298,17 @@ print("Index hits:", len(approximate_match_2mm(p, chr1, n)[0]))
 # Naive Exact Matching algorithm (up to 2 mismatches) output comparison
 def naive_2mm(p, t):
     o = [] # occurrences
-    y = len(t) # made p and t lengths variables
+    y = len(t) 
     x = len(p)
-    for i in range(y-x + 1): # outer loop reads over alignments
+    for i in range(y-x + 1): 
         match = True
         mismatch_c = 0
-        for j in range(x): # inner loops reads over character comparisons
+        for j in range(x): 
             if t[i+j] != p[j]:
-                mismatch_c+=1 # loops over the rc == p alignment
+                mismatch_c+=1 
 
                 if mismatch_c > 2:
-                    match = False # mismatch; rejects alignment and breaks free from loop
+                    match = False
                     break
         if match:
             o.append(i)
@@ -320,6 +320,7 @@ o = naive_2mm(p, chr1)
 print("Naive_2mm up to 2 matches in chr1 genome:")
 print("Naive_2mm: %d" % len(o))
 
+
 # Q5.Using the instructions given in Question 4, how many total index hits are there when searching for occurrences of
 # GGCGCGGTGGCTCACGCCTGTAAT with up to 2 substitutions in the excerpt of human chromosome 1?
 # (Don't consider reverse complements.)
@@ -330,6 +331,7 @@ p = "GGCGCGGTGGCTCACGCCTGTAAT"
 n = 2
 print("Q5. Total index hits up to 2 matches:")
 print("Total index hits:", (approximate_match_2mm(p, chr1, n)[1]))
+
 
 # 6. Let's examine whether there is a benefit to using an index built using subsequences of T rather than substrings, as we
 # discussed in the "Variations on k-mer indexes" video.  We'll consider subsequences involving every N characters.
