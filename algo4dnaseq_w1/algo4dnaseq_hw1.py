@@ -130,7 +130,7 @@ o = naive_with_rc(p, lambda_virus_genome)
 print("Q4(a). AGTCGA in lambda_virus_genome:")
 print("# Occurrences: %d" % min(o))
 
-lambda_virus_genome = rGenome("/Users/gabriellealmirol/Downloads/lambda_virus.fa")
+lambda_virus_genome = rGenome("/Users/. . ./Downloads/lambda_virus.fa")
 p = "AGTGGA"
 o = naive_with_rc(p, lambda_virus_genome)
 print("Q4(b). AGTGGA in lambda_virus_genome:")
