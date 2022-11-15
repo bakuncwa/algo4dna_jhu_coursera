@@ -4,8 +4,8 @@ Solution bank for 'Algorithms for DNA Sequencing', Genomic Data Science Speciali
 
 * [[HW1]](https://github.com/bakuncwa/algo4dnaseq_jhu/blob/main/algo4dnaseq_w1/algo4dnaseq_hw1.py) Programming Homework 1: 6/7 (Reworking Q7)
 * [[HW2]](https://github.com/bakuncwa/algo4dnaseq_jhu/blob/main/algo4dnaseq_w2/algo4dnaseq_hw2.py) Programming Homework 2: 6/6 (Q4-Q5 slow running time)
-* [[HW3]](https://github.com/bakuncwa/algo4dnaseq_jhu/blob/main/algo4dnaseq_w3/algo4dnaseq_hw3.py) Programming Homework 3: 3/4 (Reworking Q3)
-* [[HW4]](https://github.com/bakuncwa/algo4dnaseq_jhu/blob/main/algo4dnaseq_w4/algo4dnaseq_w4.py) Programming Homework 4: 2/4 (Reworking Q3 and Q4)
+* [[HW3]](https://github.com/bakuncwa/algo4dnaseq_jhu/blob/main/algo4dnaseq_w3/algo4dnaseq_hw3.py) Programming Homework 3: 3/4 (Reworking Q3. Q3-Q4 slow running time)
+* [[HW4]](https://github.com/bakuncwa/algo4dnaseq_jhu/blob/main/algo4dnaseq_w4/algo4dnaseq_w4.py) Programming Homework 4: 4/4 (Q3-Q4 slow running time)
 
 Genomes worked with
 
