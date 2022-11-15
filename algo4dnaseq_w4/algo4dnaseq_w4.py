@@ -154,11 +154,11 @@ def revised_greedy_scs(reads, k):
         reads.append(read_a + read_b[olen:])
         pairs_olen, pairs_count = overlap_graph(reads, k)
         if pairs_olen != {}:
-            sorted_pairs_olen = sorted(pairs_olen.items(), key=operator.itemgetter(1), reverse=True)
-            read_a, read_b, olen = sorted_pairs_olen[0][0][0], sorted_pairs_olen[0][0][1], sorted_pairs_olen[0][1]
+            pairs_olen_sort = sorted(pairs_olen.items(), key=operator.itemgetter(1), reverse=True)
+            read_a, read_b, olen = pairs_olen_sort[0][0][0], pairs_olen_sort[0][0][1], pairs_olen_sort[0][1]
         elif pairs_olen == {}:
             read_a, read_b, olen = pick_maximal_overlap(reads, k)
-    return ''.join(reads)
+    return "".join(reads)
 
 ADS1_reads = ("/Users/. . ./Downloads/ads1_week4_reads.fq")
 reads, _ = rFastq(ADS1_reads)
