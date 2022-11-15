@@ -12,5 +12,5 @@ Genomes worked with
 * [[LAMBDA]](https://github.com/bakuncwa/algo4dnaseq_jhu/blob/main/algo4dnaseq_w1/lambda_virus.fa) Lambda phage virus genome
 * [[ERRO37900]](https://github.com/bakuncwa/algo4dnaseq_jhu/blob/main/algo4dnaseq_w1/ERR037900.first1000.fastq) First 1000 DNA sequecing reads derived from a human genome
 * [[ALU]](https://github.com/bakuncwa/algo4dnaseq_jhu/blob/main/algo4dnaseq_w2/chr1.GRCh38.excerpt.fasta) Chromosome 1 from Alu sequence genome
-* [[ERR]](https://github.com/bakuncwa/algo4dnaseq_jhu/blob/main/algo4dnaseq_w1/ERR037900.first1000.fastq)
+* [[ERR266411_1]](https://github.com/bakuncwa/algo4dnaseq_jhu/blob/main/algo4dnaseq_w3/ERR266411_1.for_asm.fastq) ERR266411_1 genome
 * [[ADS1]](https://github.com/bakuncwa/algo4dnaseq_jhu/blob/main/algo4dnaseq_w4/ads1_week4_reads.fq) Ads1 Week 4 Reads
