@@ -152,7 +152,7 @@ def overlap_graph(reads, k):
                 olen = overlap(r, probable_r, k)
                 if olen > 0:
                     c += 1
-                    result[(r, probable_r)] = olen
+                    res[(r, probable_r)] = olen
     return res, c
 
 ERR266411_1_genome = ("/Users/. . ./Downloads/ERR266411_1.for_asm.fastq")
