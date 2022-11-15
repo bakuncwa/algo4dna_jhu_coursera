@@ -136,7 +136,7 @@ def overlap(a, b, min_length=6):
 # Overlap all pairs function
 def overlap_graph(reads, k):
     olaps = {}
-    result = {}
+    res = {}
     for r in reads:
         q = len(r)-k+1
         for i in range(q):
@@ -144,16 +144,16 @@ def overlap_graph(reads, k):
                 olaps[r[i:i+k]] = [r]
             elif r[i:i+k] in olaps:
                 olaps[r[i:i+k]].append(r)
-    count = 0
+    c = 0
     for r in reads:
         r_suffix = r[-k:]
         for probable_r in olaps[r_suffix]:
             if probable_r != r:
                 olen = overlap(r, probable_r, k)
                 if olen > 0:
-                    count += 1
+                    c += 1
                     result[(r, probable_r)] = olen
-    return result, count
+    return res, c
 
 ERR266411_1_genome = ("/Users/. . ./Downloads/ERR266411_1.for_asm.fastq")
 reads, _ = rFastq(ERR266411_1_genome)
