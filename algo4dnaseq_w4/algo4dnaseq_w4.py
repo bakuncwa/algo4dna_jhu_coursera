@@ -11,7 +11,6 @@ def overlap(a, b, min_length=3):
 
 
 # Shortest Common Superstring algorithm
-
 import itertools
 
 def scs(ss):
@@ -43,9 +42,7 @@ print(len(scs(['CCT', 'CTT', 'TGC', 'TGG', 'GAT', 'ATT'])))
 
 
 # SCS list function
-
 import itertools
-
 
 def scs_list(ss):
     import itertools
@@ -103,7 +100,6 @@ def rFastq(filename):
     return sequences, qualities
 # sequencess, qualities = rFastq("/Users/. . ./Downloads/lambda_virus.fa")
 
-
 # Overlap all pairs function
 def overlap_graph(reads, k):
     olaps = {}
@@ -137,7 +133,6 @@ def pick_maximal_overlap(reads, k):
             best_olen = olen
     return reada, readb, best_olen
 
-
 # Greedy Shortest Common Superstring algorithm
 def greedy_scs(reads, k):
     read_a, read_b, olen = pick_maximal_overlap(reads, k)
@@ -148,9 +143,7 @@ def greedy_scs(reads, k):
         read_a, read_b, olen = pick_maximal_overlap(reads, k)
     return ''.join(reads)
 
-
 # Revised Greedy SCS algorithm
-
 def revised_greedy_scs(reads, k):
     pairs_olen, pairs_count = overlap_graph(reads, k)
     pairs_olen_sort = sorted(pairs_olen.items(), key=operator.itemgetter(1), reverse=True)
