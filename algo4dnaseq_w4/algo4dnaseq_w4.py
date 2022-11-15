@@ -145,7 +145,7 @@ def greedy_scs(reads, k):
 
 # Revised Greedy SCS algorithm
 def revised_greedy_scs(reads, k):
-    pairs_olen, pairs_count = overlap_graph(reads, k)
+    pairs_olen, pairs_c = overlap_graph(reads, k)
     pairs_olen_sort = sorted(pairs_olen.items(), key=operator.itemgetter(1), reverse=True)
     read_a, read_b, olen = pairs_olen_sort[0][0][0], pairs_olen_sort[0][0][1], pairs_olen_sort[0][1]
     while olen > 0:
