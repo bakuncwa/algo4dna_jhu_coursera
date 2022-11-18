@@ -32,7 +32,7 @@ def scs(ss):
 # What is the length of the shortest common superstring of the following strings?
 # CCT, CTT, TGC, TGG, GAT, ATT
 
-print("1. SCS length of strings CCT, CTT, TGC, TGG, GAT, ATT:")
+print("Q1. SCS length of strings CCT, CTT, TGC, TGG, GAT, ATT:")
 print(len(scs(['CCT', 'CTT', 'TGC', 'TGG', 'GAT', 'ATT'])))
 
 
@@ -66,7 +66,7 @@ def scs_list(ss):
     return sorted(shortest_sup)
 
 shortest_list = scs_list(['CCT', 'CTT', 'TGC', 'TGG', 'GAT', 'ATT'])
-print("2. How many different shortest common superstrings are there for the input strings given in the previous question?")
+print("Q2. How many different shortest common superstrings are there for the input strings given in the previous question?")
 print(len(shortest_list))
 
 
@@ -171,5 +171,5 @@ print("Base count:", assemble_genome.count("A"))
 ADS1_reads = ("/Users/. . ./Downloads/ads1_week4_reads.fq")
 reads, _ = rFastq(ADS1_reads)
 assemble_genome = revised_greedy_scs(reads, 10)
-print("Q3. Total of Ts in the full assembled genome:")
+print("Q4. Total of Ts in the full assembled genome:")
 print("Base count:", assemble_genome.count("T"))
