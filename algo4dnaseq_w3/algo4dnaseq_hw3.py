@@ -132,7 +132,6 @@ def overlap(a, b, min_length=6):
             return len(a)-start
         start += 1
 
-
 # Overlap all pairs function
 def overlap_graph(reads, k):
     olaps = {}
