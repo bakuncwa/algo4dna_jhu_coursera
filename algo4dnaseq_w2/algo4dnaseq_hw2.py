@@ -332,9 +332,9 @@ print("Total index hits:", (approximate_match_2mm(p, chr1_genome, n)[1]))
 
 # 6. Let's examine whether there is a benefit to using an index built using subsequences of T rather than substrings, as we
 # discussed in the "Variations on k-mer indexes" video.  We'll consider subsequences involving every N characters.
-# For example, if we split ATATAT\verb|ATATAT|ATATAT into two substring partitions, we would get partitions ATA (the first half)
+# For example, if we split ATATAT into two substring partitions, we would get partitions ATA (the first half)
 # and TAT (second half).  But if we split ATATAT into two  subsequences  by taking every other character, we would get
-# AAA (first, third and fifth characters) and TTT\verb|TTT|TTT (second, fourth and sixth).
+# AAA (first, third and fifth characters) and TTT (second, fourth and sixth).
 # Another way to visualize this is using numbers to show how each character of P is allocated to a partition.
 # Splitting a length-6 pattern into two substrings could be represented as 111222, and splitting into two subsequences
 # of every other character could be represented as 121212
